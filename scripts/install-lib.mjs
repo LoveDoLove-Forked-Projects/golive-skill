@@ -156,7 +156,26 @@ export function recoverLock(destination, { isRunning = (pid) => { try { process.
 export async function defaultSmoke(bundle, manifest) {
   const scratch = join(dirname(bundle), 'smoke'); mkdirSafe(scratch);
   const guard = join(scratch, 'offline.cjs');
-  writeFileSync(guard, `const deny=()=>{throw new Error('Offline smoke forbids network and subprocesses')};for(const [m,names]of [['node:http',['request','get']],['node:https',['request','get']],['node:net',['connect','createConnection']],['node:tls',['connect']],['node:child_process',['spawn','spawnSync','exec','execSync','execFile','execFileSync','fork']]])for(const n of names)require(m)[n]=deny;globalThis.fetch=deny;require('node:module').syncBuiltinESMExports();`);
+  // A sanity check, not a sandbox: it denies the ways a bundle reaches the network or a process.
+  writeFileSync(guard, `const deny=()=>{throw new Error('Offline smoke forbids network and subprocesses')};
+const patch=(id,names)=>{const mod=require(id);for(const n of names)mod[n]=deny};
+const patchProto=(id,name,members)=>{const proto=require(id)[name].prototype;for(const m of members)proto[m]=deny};
+patch('node:http',['request','get']);
+patch('node:https',['request','get']);
+patch('node:net',['connect','createConnection']);
+patch('node:tls',['connect']);
+patch('node:dgram',['createSocket']);
+patch('node:http2',['connect','createServer','createSecureServer']);
+patch('node:worker_threads',['Worker']);
+patch('node:cluster',['fork','setupPrimary','setupMaster']);
+patch('node:child_process',['spawn','spawnSync','exec','execSync','execFile','execFileSync','fork']);
+for(const id of ['node:dns','node:dns/promises'])patch(id,['lookup','lookupService','resolve','resolve4','resolve6','resolveAny','resolveCname','resolveMx','resolveNs','resolvePtr','resolveSrv','resolveSoa','resolveTxt','reverse']);
+// Module functions alone are not enough: prototypes and internal callers bypass the module object.
+// Deny connect only: stdout and stderr are sockets too, so denying write would silence the bundle.
+patchProto('node:net','Socket',['connect']);
+patchProto('node:dgram','Socket',['send','connect','bind']);
+globalThis.fetch=deny;
+require('node:module').syncBuiltinESMExports();`);
   try {
     for (const args of [['help'], ['menu', '--json']]) {
       const result = spawnSync(process.execPath, ['--require', guard, join(bundle, 'scripts', `${PRODUCT}.mjs`), ...args], { cwd: scratch, env: { HOME: scratch, USERPROFILE: scratch, XDG_CONFIG_HOME: scratch, NO_COLOR: '1' }, encoding: 'utf8', timeout: 10000, maxBuffer: 1024 * 1024, windowsHide: true });

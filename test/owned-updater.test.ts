@@ -158,6 +158,20 @@ describe('source and ownership boundaries', () => {
     const lib = await import(library); const fake = mockExec([]); await install(first, { smoke: lib.defaultSmoke }); expect(fake.calls).toEqual([]);
     put(join(second, 'scripts/golive.mjs'), "await fetch('https://should-never-be-called.invalid');"); await rehash(second); await expect(update({ smoke: lib.defaultSmoke })).rejects.toThrow(/offline smoke/); expect((await status()).version).toBe('0.1.0-alpha.1');
   });
+  it.each([
+    ['fetch', "await fetch('https://should-never-be-called.invalid');"],
+    ['a socket prototype', "const net = await import('node:net'); const socket = new net.Socket(); socket.on('error', () => {}); socket.connect(1, '127.0.0.1');"],
+    ['dgram', "const dgram = await import('node:dgram'); const socket = dgram.createSocket('udp4'); socket.on('error', () => {}); socket.send(Buffer.from('x'), 1, '127.0.0.1', () => {});"],
+    ['dns', "const dns = await import('node:dns'); dns.lookup('localhost', () => {});"],
+    ['http2', "const http2 = await import('node:http2'); http2.connect('http://127.0.0.1:1').on('error', () => {});"],
+    ['a worker thread', "const { Worker } = await import('node:worker_threads'); new Worker('process.exit(0)', { eval: true }).on('error', () => {});"],
+    ['a cluster fork', "const cluster = await import('node:cluster'); if (cluster.isPrimary) cluster.fork().on('error', () => {});"],
+  ])('refuses %s leaving the offline smoke and keeps the active release', async (_escape, script) => {
+    // Each snippet exits 0 when the guard lets it run, so only a refused attempt can fail the smoke.
+    const lib = await import(library); await install();
+    put(join(second, 'scripts/golive.mjs'), `${script}\nsetTimeout(() => process.exit(0), 400);`); await rehash(second);
+    await expect(update({ smoke: lib.defaultSmoke })).rejects.toThrow(/offline smoke/); expect((await status()).version).toBe('0.1.0-alpha.1');
+  });
 });
 describe('public download', () => {
   it('requests only allowlisted immutable public paths without tokens and verifies every file', async () => {

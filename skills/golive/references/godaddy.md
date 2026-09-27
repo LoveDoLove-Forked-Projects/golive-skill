@@ -11,8 +11,12 @@ update-by-ID path remain mock-covered. The GoDaddy MCP cannot modify DNS.
 1. Use `dns=godaddy` only when the domain's **authoritative DNS** is hosted at GoDaddy. Buying a
    domain there is not enough if its nameservers point elsewhere. golive checks public delegation and
    zone access, including subdomain delegations; it never changes nameservers.
-2. Preferred sign-in: install the official CLI and log in once —
-   `curl -fsSL https://github.com/godaddy/cli/releases/latest/download/install.sh | bash`, then
+2. Preferred sign-in: install the official CLI and log in once. That installer is GoDaddy's own,
+   published on their release page —
+   `curl -fsSL https://github.com/godaddy/cli/releases/latest/download/install.sh | bash` — and the
+   **human runs it in their own terminal**: never pipe a vendor script into a shell on their behalf.
+   They may install `gddy` by their own route instead (download and inspect that script, or a package
+   manager), because golive only needs it on PATH. Then
    `gddy auth login -s domains.dns:update` in the human's terminal (browser OAuth; the session stays
    in the CLI's own store, never in chat, arguments or golive's files). Include `domains.dns:update`
    from the start: in a non-interactive run gddy does not prompt for the scope, and a write without

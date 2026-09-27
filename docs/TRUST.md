@@ -133,6 +133,15 @@ being replayed; credential values cannot reach golive's own stdout, stderr, stat
 - The credentials file is plaintext at mode 0600. It is not an OS keychain and it is not encrypted,
   so anything running as your user can read it; vendor logins and short-lived or scoped keys are
   better where you can use them.
+- The update path proves consistency, not authorship. `release.json` and the files it lists are
+  fetched from the same HTTPS origin (`raw.githubusercontent.com`), so the per-file SHA-256 values and
+  the bundle digest show that a bundle is complete and internally consistent — not who published it.
+  Releases are not cryptographically signed: the trust anchor is the GitHub repository, anyone who can
+  publish there could ship code that runs on the next approved update, and automatic replacement being
+  off by default is what bounds that exposure. The offline smoke check before a switch is a sanity
+  check for a broken release, not a sandbox. Vendor installers named in the references (GoDaddy's
+  `install.sh`, for example) are the human's own action in their own terminal, served from the
+  vendor's release page; golive neither downloads nor runs them.
 
 ## Taking access away
 

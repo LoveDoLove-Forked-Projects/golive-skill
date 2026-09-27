@@ -38,11 +38,16 @@ the agent may invoke `update --auto --between-runs --ref <that-exact-tag> --json
 new run. Reload the entire skill and verify its new version afterward. This is startup-driven
 automation, not a background daemon. Pinned copies never auto-update.
 
-Updates stage the complete bundle, verify every file and run offline smoke checks before switching
-the active pointer. The previous version is retained for local rollback. A failed/stopped update
-keeps the prior active version; a stale lock requires the explicit `recover-lock` command after
-confirming the original process has stopped. Never remove installation metadata by hand to bypass
-a refusal. These operations do not change app config/state, credentials or cloud resources.
+Updates stage the complete bundle, verify every file and run offline smoke checks — `help` and
+`menu --json` under a guard that denies the common network and subprocess entry points, including
+socket prototypes, DNS, dgram, HTTP/2, worker threads and cluster forks — before switching the active
+pointer. That guard is a sanity check for a broken or careless release, **not a sandbox**: it does not
+contain a deliberately hostile bundle, and the gate that matters is the human approving one explicit
+update to an immutable public tag. The previous version is retained for local rollback. A
+failed/stopped update keeps the prior active version; a stale lock requires the explicit
+`recover-lock` command after confirming the original process has stopped. Never remove installation
+metadata by hand to bypass a refusal. These operations do not change app config/state, credentials or
+cloud resources.
 Rolling back the skill does not roll back a deployment or database.
 
 ## Approval and resume boundary
