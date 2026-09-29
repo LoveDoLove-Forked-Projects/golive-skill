@@ -1,0 +1,21 @@
+{
+  "name": "golive",
+  "owner": {
+    "name": "mikehasa"
+  },
+  "metadata": {
+    "description": "GoLive: take an app from repo to live production on the user's own accounts.",
+    "version": "0.1.0-alpha.5"
+  },
+  "plugins": [
+    {
+      "name": "golive",
+      "description": "Deploy an app from its repo to live production on the user's own accounts, with the providers they choose.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/golive"
+      ]
+    }
+  ]
+}

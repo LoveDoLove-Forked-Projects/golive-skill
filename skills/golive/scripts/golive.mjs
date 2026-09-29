@@ -9744,6 +9744,20 @@ var package_default = {
   name: "golive",
   version: "0.1.0-alpha.5",
   description: "Agent skill: take an app from repo to live production on your own accounts, with the providers you choose.",
+  keywords: [
+    "agent-skill",
+    "claude-code",
+    "claude-code-plugin",
+    "codex",
+    "skills",
+    "deployment",
+    "hosting",
+    "database",
+    "auth",
+    "payments",
+    "email",
+    "dns"
+  ],
   license: "MIT",
   type: "module",
   bin: {
