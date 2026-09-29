@@ -281,7 +281,9 @@ The export also passed a targeted check for private workspace paths and historic
 identifiers. These checks reduce accidental disclosure risk; they are not a security certification.
 
 These checks prove local installation and runtime behavior; they do not prove native discovery in
-a new agent session. Publication is not implied by local acceptance. At the time of this snapshot,
+a new agent session — that was exercised once after publication, see
+[Agent-session discovery](#agent-session-discovery-and-a-live-cross-tool-walkthrough).
+Publication is not implied by local acceptance. At the time of this snapshot,
 anonymous clone, public Skills CLI installation, hosted CI and public release downloads had not
 yet been tested; those checks required the published endpoints. They were run after publication
 and passed — see [Post-publication acceptance](#post-publication-acceptance).
@@ -398,5 +400,31 @@ Hosted CI on the public repository passed for the [initial commit](https://githu
 and the [latest documentation commit](https://github.com/mikehasa/golive-skill/actions/runs/35928911426).
 
 These results cover public installation and runtime identity only. Everything in
-[Still unverified](#still-unverified) remains unverified, skill discovery inside a new agent
-session has not been tested, and no end user's own global installation has been confirmed.
+[Still unverified](#still-unverified) remains unverified, and an independent end user's own
+global installation has still not been confirmed.
+
+## Agent-session discovery and a live cross-tool walkthrough
+
+Recorded 2026-09-29, after publication, at release `v0.1.0-alpha.5`. The owner's own global
+installation (Skills CLI; `~/.claude/skills/golive` → `~/.agents/skills/golive`) was updated with
+`npx skills update golive -g` (alpha.2 → alpha.5), then **discovered and run by an agent in a new
+session** — Claude Code, in a fresh git worktree of a demo repository — which ran
+`detect → init --stack hosting=vercel → doctor → plan → apply --confirm-live → verify → handoff`,
+deployed a static site plus one serverless function to the owner's own Vercel team, and skipped
+nothing. A second agent (Kimi Code, from a checkout of this repository) independently re-read the
+live site, the deployment id and the hidden paths afterwards.
+
+The walkthrough repository is public and carries the full record — plan, result, raw `status`
+output and a verbatim (redacted) session transcript:
+https://github.com/mikehasa/golive-gstack-demo, live at https://golive-gstack-demo.vercel.app.
+It also produced four findings, filed as issues [#64](https://github.com/mikehasa/golive-skill/issues/64),
+[#65](https://github.com/mikehasa/golive-skill/issues/65), [#66](https://github.com/mikehasa/golive-skill/issues/66) and
+[#67](https://github.com/mikehasa/golive-skill/issues/67): the created project can only take the current
+folder's name; a static deploy would publish `.golive/state.json`, `golive.yaml` and the run docs
+unless an allowlist `.vercelignore` is added; GoLive leaves no `.vercel/` link, so tools that detect
+Vercel from `vercel.json`/`.vercel/` cannot see a GoLive deployment; and a code-only change plans no
+deploy by design, with no documentation for the expected path afterwards.
+
+**Limits.** One agent client (Claude Code) and one install channel (Skills CLI global); the owner's
+own machine, not an independent end user; no discovery of a plugin-manager or npm-tarball copy
+inside an agent session. This is not the cross-agent matrix.
