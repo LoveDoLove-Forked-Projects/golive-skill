@@ -476,9 +476,8 @@ still lists the two `suspicious.dangerous_exec` notes for the runtime's own `chi
 exactly as `0.1.0-alpha.5` does) and only one reason left: `card.missing`. The registry's listing
 card (`skill-card.md`) is generated on ClawHub's side after publication — the CLI even strips a
 submitted one — and it arrives late rather than never: `0.1.0-alpha.6`'s card appeared about an hour
-and a half after its publish (`2658` bytes), after which that version's own verify read `pass`; the
-`0.1.0-alpha.7` card was still pending when this was written. So a fresh `card.missing` is a lag to
-re-check, not a failure to fix.
+and a half after its publish (`2658` bytes), and `0.1.0-alpha.7`'s about an hour after its
+(`2238` bytes; see below). So a fresh `card.missing` is a lag to re-check, not a failure to fix.
 
 **The broken `0.1.0-alpha.6` copy was withdrawn.** `clawhub delete golive --version 0.1.0-alpha.6
 --yes` soft-deletes one non-latest version (`clawhub undelete` restores it; the version number stays
@@ -488,10 +487,14 @@ version as `pass` — it checks the published files and the registry scan, not g
 integrity check — which is why an install followed by `version --json` is the check this project
 trusts.
 
-**Not verified:** the listing card for `0.1.0-alpha.7` (pending at the time of writing, expected to
-appear as `0.1.0-alpha.6`'s did) and any OpenClaw client — the install path was exercised through the
-registry's own CLI, not through an agent session. The registry's `latest` tag points at
-`0.1.0-alpha.7`, so an install takes the working copy.
+**The card arrived, and with it the verdict.** An hour after the publish, the `0.1.0-alpha.7` card
+answered (`2238` bytes) and `npx clawhub@latest skill verify golive --version 0.1.0-alpha.7` read
+`decision: pass` with no reasons — so this channel is verified end to end for this release: the
+artifact installs, its copy runs and reports the built digest, and the registry's own review agrees.
+
+**Not verified:** any OpenClaw client — the install path was exercised through the registry's own
+CLI, not through an agent session. The registry's `latest` tag points at `0.1.0-alpha.7`, so an
+install takes the working copy.
 
 ## 0.1.0-alpha.7 publication acceptance
 
