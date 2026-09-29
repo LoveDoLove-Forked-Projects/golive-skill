@@ -98,6 +98,18 @@ names — and nothing else. Without that tolerance every ClawHub copy reported i
 is why the check carries the exception (it is the only marketplace that does this today). Updates are
 ClawHub's; nothing adopts that copy, and the own installer leaves it unchanged as an external copy.
 
+Two registry behaviours to remember when a publish does not verify:
+
+- **A path with a dot-prefixed segment is never published.** The registry CLI skips every entry whose
+  relative path contains a `.`-prefixed directory or file name (`hasDotPathSegment`), so a manifest
+  file that lives in one — an empty `references/.gitkeep` placeholder, for instance — is missing from
+  the published artifact and the installed copy then fails its own integrity check. Keep everything
+  `release.json` lists on dot-free paths.
+- **The listing card is generated registry-side.** `clawhub skill verify <slug> --version <version>`
+  can report `card.missing` for a version published from the CLI (a submitted `skill-card.md` is
+  stripped before upload), while the install and its integrity check are fine. That field is not
+  something the command line can fill.
+
 ## One version and complete bundle integrity
 
 `package.json` supplies the product version. Build produces the bundled CLI, standalone installer
@@ -246,7 +258,9 @@ that builds the release is not required to be logged in.
 **5. ClawHub.** `npx clawhub@latest skill publish skills/golive --slug golive --name GoLive
 --version <version> --changelog "<what changed>"` (dry-run first, `--version` never omitted — see
 [the ClawHub channel](#third-channel-clawhub-the-openclaw-registry)), then confirm
-`npx clawhub@latest search golive --exact` reports the new version.
+`npx clawhub@latest search golive --exact` and `… skill verify golive --version <version>` report the
+new version, and that a scratch `npx clawhub@latest install golive` answers `version --json` with it.
+Expect `card.missing` there: the listing card is the registry's to generate (see the same section).
 
 **6. Channels that need no publish.** The GitHub channel (`npx skills add
 https://github.com/mikehasa/golive-skill --skill golive`) and the skill's `update-check` read the

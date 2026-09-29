@@ -468,7 +468,17 @@ registry's own review of the alpha.6 artifact said the same thing in its verdict
 fails its own integrity check"). A manifest-listed file going missing is still a hard failure — the
 zero-byte placeholder was removed rather than the check weakened.
 
-**Not verified:** the live ClawHub copy of `0.1.0-alpha.7` (published after this was written; its
-registry verdict and installed copy are re-checked then), the `0.1.0-alpha.6` copy on ClawHub, which
-stays broken, and any OpenClaw client — the install path above was exercised through the registry's
-own CLI, not through an agent session.
+**Verified after publication.** `npx clawhub@latest install golive` into an empty directory now
+installs `0.1.0-alpha.7` and the copy answers `version --json` with that version, the
+`v0.1.0-alpha.7` ref and the bundle digest this repository builds. `npx clawhub@latest skill verify
+golive --version 0.1.0-alpha.7` reports `security.status_not_clean` **gone** (its static analysis
+still lists the two `suspicious.dangerous_exec` notes for the runtime's own `child_process` use,
+exactly as `0.1.0-alpha.5` does) and only one reason left: `card.missing`. The registry's listing
+card (`skill-card.md`) is generated on ClawHub's side — the CLI even strips a submitted one — and
+`0.1.0-alpha.5` has a card from its publish flow while `0.1.0-alpha.6` and `0.1.0-alpha.7` do not, so
+that field is a registry-side gap, not something this repository can fill from the command line.
+
+**Not verified:** the listing card for the CLI-published versions (above), the broken
+`0.1.0-alpha.6` copy on ClawHub, which stays published because its bytes are immutable, and any
+OpenClaw client — the install path was exercised through the registry's own CLI, not through an agent
+session. The registry's `latest` tag points at `0.1.0-alpha.7`, so an install takes the working copy.
