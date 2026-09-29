@@ -253,7 +253,11 @@ refuse the update.
 **4. npm.** From the tagged commit: `npm publish --tag alpha`, then `npm dist-tag add
 golive@<version> latest` so `npx golive` and `npx golive@alpha` resolve to the same release, and
 confirm with `npm view golive dist-tags`. The publish needs the maintainer's own 2FA; the machine
-that builds the release is not required to be logged in.
+that builds the release is not required to be logged in. Both commands can report success while the
+registry is still processing: for about ten minutes afterwards `npm view` serves a cached packument
+that names the previous release, and only the registry's own endpoints agree —
+`https://registry.npmjs.org/-/package/golive/dist-tags` and the new version's tarball URL — so do not
+retry on that reading alone.
 
 **5. ClawHub.** `npx clawhub@latest skill publish skills/golive --slug golive --name GoLive
 --version <version> --changelog "<what changed>"` (dry-run first, `--version` never omitted — see
