@@ -105,10 +105,19 @@ Two registry behaviours to remember when a publish does not verify:
   file that lives in one — an empty `references/.gitkeep` placeholder, for instance — is missing from
   the published artifact and the installed copy then fails its own integrity check. Keep everything
   `release.json` lists on dot-free paths.
-- **The listing card is generated registry-side.** `clawhub skill verify <slug> --version <version>`
-  can report `card.missing` for a version published from the CLI (a submitted `skill-card.md` is
-  stripped before upload), while the install and its integrity check are fine. That field is not
-  something the command line can fill.
+- **The listing card is generated registry-side, asynchronously.** `clawhub skill verify <slug>
+  --version <version>` reports `card.missing` for a while after a publish (a submitted
+  `skill-card.md` is stripped before upload; `0.1.0-alpha.6`'s card appeared about an hour and a half
+  later), so read that as "not yet", not as a failure — re-check rather than republish. Nothing on
+  the command line can fill it.
+
+A version that shipped broken can be withdrawn, which is reversible: `clawhub delete <skill>
+--version <version> --yes` soft-deletes one non-latest version (`clawhub undelete` restores it, and
+the version number stays reserved). `0.1.0-alpha.6` was withdrawn this way after its registry copy
+turned out to install a bundle that refuses to run; `latest` was already pointing at the fixed
+`0.1.0-alpha.7`. Note that `skill verify` reported that broken version as `pass` — it checks the
+artifact's files and scan, not golive's own integrity check, so the acceptance test for this channel
+is an install followed by `version --json`.
 
 ## One version and complete bundle integrity
 

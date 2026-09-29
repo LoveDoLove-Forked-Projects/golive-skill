@@ -474,14 +474,24 @@ installs `0.1.0-alpha.7` and the copy answers `version --json` with that version
 golive --version 0.1.0-alpha.7` reports `security.status_not_clean` **gone** (its static analysis
 still lists the two `suspicious.dangerous_exec` notes for the runtime's own `child_process` use,
 exactly as `0.1.0-alpha.5` does) and only one reason left: `card.missing`. The registry's listing
-card (`skill-card.md`) is generated on ClawHub's side — the CLI even strips a submitted one — and
-`0.1.0-alpha.5` has a card from its publish flow while `0.1.0-alpha.6` and `0.1.0-alpha.7` do not, so
-that field is a registry-side gap, not something this repository can fill from the command line.
+card (`skill-card.md`) is generated on ClawHub's side after publication — the CLI even strips a
+submitted one — and it arrives late rather than never: `0.1.0-alpha.6`'s card appeared about an hour
+and a half after its publish (`2658` bytes), after which that version's own verify read `pass`; the
+`0.1.0-alpha.7` card was still pending when this was written. So a fresh `card.missing` is a lag to
+re-check, not a failure to fix.
 
-**Not verified:** the listing card for the CLI-published versions (above), the broken
-`0.1.0-alpha.6` copy on ClawHub, which stays published because its bytes are immutable, and any
-OpenClaw client — the install path was exercised through the registry's own CLI, not through an agent
-session. The registry's `latest` tag points at `0.1.0-alpha.7`, so an install takes the working copy.
+**The broken `0.1.0-alpha.6` copy was withdrawn.** `clawhub delete golive --version 0.1.0-alpha.6
+--yes` soft-deletes one non-latest version (`clawhub undelete` restores it; the version number stays
+reserved), and ClawHub no longer resolves or installs it, while `latest` keeps pointing at the fixed
+`0.1.0-alpha.7`. Worth knowing for the acceptance test: `skill verify` had reported that same broken
+version as `pass` — it checks the published files and the registry scan, not golive's own bundle
+integrity check — which is why an install followed by `version --json` is the check this project
+trusts.
+
+**Not verified:** the listing card for `0.1.0-alpha.7` (pending at the time of writing, expected to
+appear as `0.1.0-alpha.6`'s did) and any OpenClaw client — the install path was exercised through the
+registry's own CLI, not through an agent session. The registry's `latest` tag points at
+`0.1.0-alpha.7`, so an install takes the working copy.
 
 ## 0.1.0-alpha.7 publication acceptance
 
