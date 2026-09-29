@@ -482,3 +482,25 @@ that field is a registry-side gap, not something this repository can fill from t
 `0.1.0-alpha.6` copy on ClawHub, which stays published because its bytes are immutable, and any
 OpenClaw client — the install path was exercised through the registry's own CLI, not through an agent
 session. The registry's `latest` tag points at `0.1.0-alpha.7`, so an install takes the working copy.
+
+## 0.1.0-alpha.7 publication acceptance
+
+Recorded 2026-09-29, after the release was merged (tag `v0.1.0-alpha.7`), for the two channels that
+were republished from it. Every check below reads the public artifact, not the working tree.
+
+| Channel | What was observed |
+| --- | --- |
+| GitHub tag | An anonymous `git clone --branch v0.1.0-alpha.7` carries `release.json` with version `0.1.0-alpha.7`, ref `v0.1.0-alpha.7` and bundle digest `bc2b1d0a…`; its bundled runtime answers `version --json` and `update-check --offline --json` |
+| Skills CLI | `npx skills add https://github.com/mikehasa/golive-skill --skill golive --agent claude-code --yes` into an isolated home and scratch project installed 20 manifest files plus `release.json`, none extra or missing, and the copy reports the same version/ref/digest |
+| npm | The published tarball's registry shasum is `ddc2a3c5819fc49cabe79a114c88e527f08f275d`, the artifact built from the tag; `dist-tags` are `latest` and `alpha` → `0.1.0-alpha.7`, and `npx golive@alpha install --agent codex` installed a copy that reports version `0.1.0-alpha.7`, ref `v0.1.0-alpha.7` and digest `bc2b1d0a…` |
+| ClawHub | `npx clawhub@latest install golive` installed `0.1.0-alpha.7` and the copy answers `version --json` with the same version, ref and digest; `latest` resolves there to `0.1.0-alpha.7` |
+
+The npm publish itself is asynchronous in a way the CLI does not make obvious: `npm publish` and
+`npm dist-tag add` both printed success, the dist-tags endpoint showed the new mapping within minutes,
+and the version document plus its tarball only answered about ten minutes later. A `npm view golive
+dist-tags` run in that window served a cached packument that still named the previous release, so the
+registry's own endpoints — `https://registry.npmjs.org/-/package/golive/dist-tags` and the tarball
+URL — are the ones to read before concluding a publish failed.
+
+These results cover publication and installation. They do not extend the provider evidence above, and
+no OpenClaw client was exercised.
