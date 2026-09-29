@@ -13,7 +13,7 @@
     "approval": 1
   },
   "files": {
-    "SKILL.md": "48e9d0667b9d56e5106595197763f869c2378f7fc999738cc434cf62daeeb252",
+    "SKILL.md": "d9d16a2633ede68df3684e799240406bbef6faa073d21d9c62e9a521d8958bf1",
     "LICENSE": "b1546216882fd37b1602f3a004e8548b5f6c38ada73117308d4c3ac6968235e9",
     "THIRD_PARTY_NOTICES.md": "ad33f954a31c411cc667c07460859c77a014d6720e581a5ce5edd48c9c962781",
     "references/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -34,5 +34,5 @@
     "scripts/install-cli.mjs": "ac9ee3f57b5fcbc54ef16b1ee0b22c967b846cc32512750046b13d5c1a7075bd",
     "scripts/install-lib.mjs": "1c5e3cddb9ace5e4fbd8c882f134ab06f512043bfc238890716c7d49fcbefd98"
   },
-  "bundleDigest": "b6456e1d16f2e5f2b8edd84b70e4c16b0356d71fe600741054a33a2794f903eb"
+  "bundleDigest": "8284599fc7abfbee89c86be4194ccdeac25f4abec7adb0d82190f4f0fc92a19a"
 }
