@@ -552,3 +552,21 @@ delete of a golive-created project** (blocked by the free plan's one-project lim
 project token to a host env** (that fixture had no host and no mapped env names); the **EU region**;
 and the **app's own event flow** (no app code existed). Everything above is one account, one region
 and one project: `posthog-ingest` proves ingest of one synthetic event, not the app's own analytics.
+
+## 0.1.0-alpha.8 publication acceptance
+
+Recorded 2026-10-03, after the release was merged (tag `v0.1.0-alpha.8`, commit `169dacd`), for the
+channels republished from it. Every check below reads the public artifact, not the working tree.
+
+| Channel | What was observed |
+| --- | --- |
+| GitHub tag | An anonymous `git clone --branch v0.1.0-alpha.8` carries `release.json` with version `0.1.0-alpha.8`, ref `v0.1.0-alpha.8` and bundle digest `1bb7e424…`; its bundled runtime answers `version --json` with the same version, ref and digest |
+| GitHub Release | `v0.1.0-alpha.8` published with the `npm pack` tarball attached (`golive-0.1.0-alpha.8.tgz`, 523,256 bytes, sha256 `12f83fb2b53cbb21f12f6f91762415eee22499feeaee600e5f9a634aa2649871`) |
+| Skills CLI | `npx skills add https://github.com/mikehasa/golive-skill --skill golive --agent codex --yes` into an isolated home and scratch project installed the bundle, whose runtime answers `version --json` with version `0.1.0-alpha.8`, ref `v0.1.0-alpha.8` and the same digest |
+| ClawHub | `npx clawhub@latest skill publish skills/golive --slug golive --name GoLive --version 0.1.0-alpha.8` published; `npx clawhub@latest install golive` installed `0.1.0-alpha.8`, whose runtime answers `version --json` with the same version, ref and digest. `skill verify golive --version 0.1.0-alpha.8` reports `security: clean` with only `card.missing` — the listing card is generated on ClawHub's side after publication (about an hour, in past releases), so re-check rather than republish |
+
+The npm registry channel had **not** been republished when this record was written: the machine that
+built the release has no npm session (`E401`), and the publish needs the maintainer's own login and
+2FA. `0.1.0-alpha.7` remains what npm serves until the maintainer runs `npm publish --tag alpha` and
+`npm dist-tag add golive@0.1.0-alpha.8 latest` from the tagged commit (or with the attached tarball);
+a later record should name that artifact's shasum.
