@@ -1,4 +1,4 @@
-<!-- golive-translation: lang=ja; source=README.md; source-commit=a62a270; reviewed=false; updated=2026-10-03 -->
+<!-- golive-translation: lang=ja; source=README.md; source-commit=169dacd; reviewed=false; updated=2026-10-03 -->
 # GoLive
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Español](README.es.md) · [Português (Brasil)](README.pt-BR.md) · [Deutsch](README.de.md)
