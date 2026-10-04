@@ -563,10 +563,12 @@ channels republished from it. Every check below reads the public artifact, not t
 | GitHub tag | An anonymous `git clone --branch v0.1.0-alpha.8` carries `release.json` with version `0.1.0-alpha.8`, ref `v0.1.0-alpha.8` and bundle digest `1bb7e424…`; its bundled runtime answers `version --json` with the same version, ref and digest |
 | GitHub Release | `v0.1.0-alpha.8` published with the `npm pack` tarball attached (`golive-0.1.0-alpha.8.tgz`, 523,256 bytes, sha256 `12f83fb2b53cbb21f12f6f91762415eee22499feeaee600e5f9a634aa2649871`) |
 | Skills CLI | `npx skills add https://github.com/mikehasa/golive-skill --skill golive --agent codex --yes` into an isolated home and scratch project installed the bundle, whose runtime answers `version --json` with version `0.1.0-alpha.8`, ref `v0.1.0-alpha.8` and the same digest |
-| ClawHub | `npx clawhub@latest skill publish skills/golive --slug golive --name GoLive --version 0.1.0-alpha.8` published; `npx clawhub@latest install golive` installed `0.1.0-alpha.8`, whose runtime answers `version --json` with the same version, ref and digest. `skill verify golive --version 0.1.0-alpha.8` reports `security: clean` with only `card.missing` — the listing card is generated on ClawHub's side after publication (about an hour, in past releases), so re-check rather than republish |
+| ClawHub | `npx clawhub@latest skill publish skills/golive --slug golive --name GoLive --version 0.1.0-alpha.8` published; `npx clawhub@latest install golive` installed `0.1.0-alpha.8`, whose runtime answers `version --json` with the same version, ref and digest. `skill verify golive --version 0.1.0-alpha.8` reports `decision: pass` with no reasons and `security: clean` — the listing card the registry generates asynchronously arrived about an hour after publication |
+| npm | The registry serves `0.1.0-alpha.8` under the `alpha` and `latest` dist-tags; the published tarball's shasum is `2ed8941ff7e27c9ed78dec5d6d1b06740ecd7524` (sha256 `12f83fb2…`), byte-identical to the `npm pack` artifact attached to the GitHub Release, and `npx golive@alpha install --agent codex` installed a copy whose runtime answers `version --json` with version `0.1.0-alpha.8`, ref `v0.1.0-alpha.8` and digest `1bb7e424…` |
 
-The npm registry channel had **not** been republished when this record was written: the machine that
-built the release has no npm session (`E401`), and the publish needs the maintainer's own login and
-2FA. `0.1.0-alpha.7` remains what npm serves until the maintainer runs `npm publish --tag alpha` and
-`npm dist-tag add golive@0.1.0-alpha.8 latest` from the tagged commit (or with the attached tarball);
-a later record should name that artifact's shasum.
+The npm publish followed the same asynchronous pattern as previous releases. The first attempt from
+the release machine failed with `E404` on the PUT because its npm session was unauthenticated
+(`npm whoami` → `401`) — the registry answers an unauthenticated publish that way rather than
+disclosing anything; after the maintainer re-authenticated, the version document and dist-tags
+answered about three minutes after the publish. `npm view` can serve a cached packument for
+longer, so the registry's own endpoints are the ones to read.
