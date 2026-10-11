@@ -572,3 +572,24 @@ the release machine failed with `E404` on the PUT because its npm session was un
 disclosing anything; after the maintainer re-authenticated, the version document and dist-tags
 answered about three minutes after the publish. `npm view` can serve a cached packument for
 longer, so the registry's own endpoints are the ones to read.
+
+## 0.1.0-alpha.9 publication acceptance
+
+Recorded 2026-10-11, after the release was merged (tag `v0.1.0-alpha.9`, commit `1785d4d`), for the
+release that carries the UptimeRobot adapter (PR #77). Every check below reads the public artifact,
+not the working tree.
+
+| Channel | What was observed |
+| --- | --- |
+| GitHub tag | An anonymous `git clone --branch v0.1.0-alpha.9` carries `release.json` with version `0.1.0-alpha.9`, ref `v0.1.0-alpha.9` and bundle digest `e7bc6549…`; its bundled runtime answers `version --json` with the same version, ref and digest |
+| GitHub Release | `v0.1.0-alpha.9` published with the `npm pack` tarball attached (`golive-0.1.0-alpha.9.tgz`, 534,868 bytes, sha256 `e4de0b572bd076c129b8c68b369f2766da1526c039c0e76ed2603cab792de134`) |
+| Skills CLI | `npx skills add https://github.com/mikehasa/golive-skill --skill golive --agent codex --yes` into an isolated home and scratch project installed the bundle, whose runtime answers `version --json` with version `0.1.0-alpha.9` and the same digest |
+| ClawHub | `npx clawhub@latest skill publish skills/golive --slug golive --name GoLive --version 0.1.0-alpha.9` published, and the scans cleared the same day; `npx clawhub@latest install golive` installed `0.1.0-alpha.9`, whose runtime answers `version --json` with the same version, ref and digest. `skill verify golive` reports `security: clean` with the single reason `card.missing` at recording time — the listing card the registry generates asynchronously, expected for a CLI-published version |
+| npm | The registry serves `0.1.0-alpha.9` under the `alpha` and `latest` dist-tags; the published tarball's shasum is `61a2661da587061f30979956aadc8a9d39aa6da0` (sha256 `e4de0b57…`), byte-identical to the `npm pack` artifact attached to the GitHub Release, and `npx golive@alpha install --agent codex` installed a copy whose runtime answers `version --json` with version `0.1.0-alpha.9`, ref `v0.1.0-alpha.9` and digest `e7bc6549…` |
+
+The npm publish followed the asynchronous pattern of previous releases: immediately after the
+maintainer published, the registry's `dist-tags` endpoint still named `0.1.0-alpha.8` and the
+version document answered `404`; both answered `0.1.0-alpha.9` about two minutes later. The
+UptimeRobot adapter this release carries remains implemented and mock-covered, with no live run
+(the monitoring row in [provider scope](PROVIDERS.md) says so), so no provider behaviour is claimed
+here.
