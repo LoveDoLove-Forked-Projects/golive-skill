@@ -67,7 +67,9 @@ Essas respostas na íntegra: [confiança, acesso e controle](docs/TRUST.md) e
 [recuperação](docs/RECOVERY.md). A [arquitetura](docs/ARCHITECTURE.md) é o contrato do produto, o
 [escopo de provedores](docs/PROVIDERS.md) diz o que cada provedor faz hoje, o
 [registro de validação](docs/VALIDATION.md) separa o que foi exercitado ao vivo do que é apenas
-coberto por mocks, e a [distribuição](docs/DISTRIBUTION.md) cobre instalação e atualizações.
+coberto por mocks, a [distribuição](docs/DISTRIBUTION.md) cobre instalação e atualizações, e
+[usar o GoLive com o gstack](docs/GSTACK.md) cobre o caminho de deploy quando você constrói com o
+gstack.
 
 [Instalação](README.md#install) · [Usar o GoLive](README.md#use-golive) · [Ver o fluxo](README.md#what-a-run-looks-like) · [Escopo do alpha](README.md#what-this-alpha-supports) · [Roadmap](README.md#the-full-go-live-checklist-and-roadmap) · [Contribuir](CONTRIBUTING.md)
 

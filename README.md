@@ -59,7 +59,8 @@ Those answers in full: [trust, access and control](docs/TRUST.md) and
 [recovery](docs/RECOVERY.md). The [architecture](docs/ARCHITECTURE.md) is the product contract,
 [provider scope](docs/PROVIDERS.md) says what each provider can do today, the
 [validation record](docs/VALIDATION.md) separates what has been exercised live from what is only
-mock-covered, and [distribution](docs/DISTRIBUTION.md) covers installation and updates.
+mock-covered, [distribution](docs/DISTRIBUTION.md) covers installation and updates, and
+[using GoLive with gstack](docs/GSTACK.md) covers the deploy path when gstack builds the app.
 
 [Install](#install) · [Use GoLive](#use-golive) · [See the workflow](#what-a-run-looks-like) · [Alpha scope](#what-this-alpha-supports) · [Roadmap](#the-full-go-live-checklist-and-roadmap) · [Contribute](CONTRIBUTING.md)
 

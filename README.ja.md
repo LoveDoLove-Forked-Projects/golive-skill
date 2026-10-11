@@ -27,7 +27,7 @@
 - **ロールバックは狭く、オプトインで、決して自動ではありません。** チェックの失敗がロールバックを引き起こすことはありません。`release.rollback: true` が計画するのは 1 つの手順だけで、golive 自身が記録した以前のデプロイへ本番を向け直します。ダッシュボード、Git push、プルリクエストで作られたデプロイは対象にならず、データ、DNS、決済、メールのリソースには触れません。この向け直しに対応しているのは現時点では Netlify だけです —— Vercel ではダッシュボードで本番を直してください（Vercel のアダプタには、本番が何を配信しているかを読み取る手段がありません）。プロモーションとロールバックは実装済みで mock カバレッジ済みですが、**live 検証はまだです**。
 - **何も黙って残しません —— ただしそれは「何も残らない」という意味ではありません。** `golive teardown` が削除するのは、自分が作成したと証明できるリソースだけです。削除後には DNS ゾーンとホスト側のプロジェクトを読み直し、自分では削除できない残置物 —— Supabase と Neon のプロジェクト、Resend の送信ドメイン、読み取れないゾーンやホストプロジェクト —— はすべて、何が残っているかと手作業での消し方を書いた handoff として明示します。また、削除すると golive がそのリソースについて記録していたベースラインも忘れるため、`golive status` が golive 自身の teardown をドリフトとして報告することはありません。
 
-この 2 つの回答の全文は [信頼・アクセス・制御](docs/TRUST.md) と [復旧](docs/RECOVERY.md) にあります。[アーキテクチャ](docs/ARCHITECTURE.md) はプロダクトの契約であり、[プロバイダ対応範囲](docs/PROVIDERS.md) は各プロバイダが現時点でできることを示し、[検証記録](docs/VALIDATION.md) は live で実際に動かしたものと mock カバレッジだけのものを区別し、[配布](docs/DISTRIBUTION.md) はインストールと更新を扱っています。
+この 2 つの回答の全文は [信頼・アクセス・制御](docs/TRUST.md) と [復旧](docs/RECOVERY.md) にあります。[アーキテクチャ](docs/ARCHITECTURE.md) はプロダクトの契約であり、[プロバイダ対応範囲](docs/PROVIDERS.md) は各プロバイダが現時点でできることを示し、[検証記録](docs/VALIDATION.md) は live で実際に動かしたものと mock カバレッジだけのものを区別し、[配布](docs/DISTRIBUTION.md) はインストールと更新を扱っており、gstack でビルドするときのデプロイ経路は [GoLive と gstack の併用](docs/GSTACK.md) で扱っています。
 
 [インストール](README.md#install) · [GoLive を使う](README.md#use-golive) · [ワークフローを見る](README.md#what-a-run-looks-like) · [alpha の対応範囲](README.md#what-this-alpha-supports) · [ロードマップ](README.md#the-full-go-live-checklist-and-roadmap) · [コントリビュート](CONTRIBUTING.md)
 

@@ -69,8 +69,9 @@ Esas respuestas completas están en [confianza, acceso y control](docs/TRUST.md)
 [recuperación](docs/RECOVERY.md). La [arquitectura](docs/ARCHITECTURE.md) es el contrato del
 producto, el [alcance de proveedores](docs/PROVIDERS.md) dice qué puede hacer hoy cada uno, el
 [registro de validación](docs/VALIDATION.md) separa lo que se ha ejercitado en vivo de lo que solo
-está cubierto con mocks, y [distribución](docs/DISTRIBUTION.md) cubre la instalación y las
-actualizaciones.
+está cubierto con mocks, [distribución](docs/DISTRIBUTION.md) cubre la instalación y las
+actualizaciones, y [usar GoLive con gstack](docs/GSTACK.md) cubre la ruta de despliegue cuando
+construyes con gstack.
 
 [Instalar](README.md#install) · [Usar GoLive](README.md#use-golive) · [Ver el flujo de trabajo](README.md#what-a-run-looks-like) · [Alcance de la alpha](README.md#what-this-alpha-supports) · [Hoja de ruta](README.md#the-full-go-live-checklist-and-roadmap) · [Contribuir](CONTRIBUTING.md)
 

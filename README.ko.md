@@ -63,6 +63,7 @@
 [아키텍처](docs/ARCHITECTURE.md)는 제품 계약이고, [프로바이더 범위](docs/PROVIDERS.md)는 각
 프로바이더가 오늘 무엇을 할 수 있는지 말하며, [검증 기록](docs/VALIDATION.md)은 live로 실행해 본
 것과 mock으로만 커버된 것을 구분하고, [배포와 업데이트](docs/DISTRIBUTION.md)는 설치와 업데이트를
+다룹니다. gstack으로 빌드할 때의 배포 경로는 [GoLive와 gstack 함께 쓰기](docs/GSTACK.md)에서
 다룹니다.
 
 [설치](README.md#install) · [GoLive 사용하기](README.md#use-golive) · [실행 과정 보기](README.md#what-a-run-looks-like) · [alpha 범위](README.md#what-this-alpha-supports) · [로드맵](README.md#the-full-go-live-checklist-and-roadmap) · [기여하기](CONTRIBUTING.md)

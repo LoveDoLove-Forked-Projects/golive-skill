@@ -25,7 +25,7 @@
 - **回滚范围很窄、需要主动开启、而且从不自动发生。** 检查失败永远不会触发回滚。`release.rollback: true` 只会规划一步：把生产指回 golive 自己记录过的更早一次部署；由控制台、Git push 或 pull request 产生的部署不是回滚目标，而且这一步不碰任何数据、DNS、支付或邮件资源。目前只有 Netlify 支持这种重新指向 —— 在 Vercel 上你得去控制台修正生产（Vercel 的适配器读不到生产实际提供的是哪次部署）。晋升（promotion）和回滚已经实现并有 mock 覆盖，但**尚未经过 live 验证**。
 - **不会悄悄留下东西 —— 但这不等于什么都没留下。** `golive teardown` 只删除它能证明是自己创建的资源；删除之后会重新读取 DNS zone 和托管项目，并把每一个它删不掉的遗留项 —— Supabase 和 Neon 项目、Resend 发信域名、读不到的 zone 或托管项目 —— 写成一条交接，说明剩下什么、以及怎么手动删掉。删除同时会忘掉 golive 为那个资源记录的基线，这样 `golive status` 就不会把 golive 自己的拆除当成漂移报出来。
 
-完整答案见[信任、访问与控制](docs/TRUST.md)和[恢复](docs/RECOVERY.md)。[架构](docs/ARCHITECTURE.md)是产品契约，[服务商范围](docs/PROVIDERS.md)说明每家服务商今天能做什么，[验证记录](docs/VALIDATION.md)把真正在 live 环境跑过的东西和只有 mock 覆盖的东西分开，[分发](docs/DISTRIBUTION.md)讲安装与更新。
+完整答案见[信任、访问与控制](docs/TRUST.md)和[恢复](docs/RECOVERY.md)。[架构](docs/ARCHITECTURE.md)是产品契约，[服务商范围](docs/PROVIDERS.md)说明每家服务商今天能做什么，[验证记录](docs/VALIDATION.md)把真正在 live 环境跑过的东西和只有 mock 覆盖的东西分开，[分发](docs/DISTRIBUTION.md)讲安装与更新，[与 gstack 搭配使用](docs/GSTACK.md)讲用 gstack 构建时部署链路怎么接。
 
 [安装](README.md#install) · [使用 GoLive](README.md#use-golive) · [工作流程](README.md#what-a-run-looks-like) · [Alpha 范围](README.md#what-this-alpha-supports) · [路线图](README.md#the-full-go-live-checklist-and-roadmap) · [参与贡献](CONTRIBUTING.md)
 

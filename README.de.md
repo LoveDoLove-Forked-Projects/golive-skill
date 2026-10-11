@@ -71,8 +71,9 @@ Diese Antworten in voller Länge: [Vertrauen, Zugriff und Kontrolle](docs/TRUST.
 [Wiederherstellung](docs/RECOVERY.md). Die [Architektur](docs/ARCHITECTURE.md) ist der Produktvertrag,
 der [Provider-Umfang](docs/PROVIDERS.md) sagt, was jeder Provider heute kann, das
 [Validierungsprotokoll](docs/VALIDATION.md) trennt, was live erprobt wurde, von dem, was nur
-mock-abgedeckt ist, und [Installation und Updates](docs/DISTRIBUTION.md) behandelt Installation und
-Aktualisierung.
+mock-abgedeckt ist, [Installation und Updates](docs/DISTRIBUTION.md) behandelt Installation und
+Aktualisierung, und [GoLive mit gstack nutzen](docs/GSTACK.md) behandelt den Deploy-Pfad, wenn du
+mit gstack baust.
 
 [Installation](README.md#install) · [GoLive benutzen](README.md#use-golive) · [Den Workflow ansehen](README.md#what-a-run-looks-like) · [Alpha-Umfang](README.md#what-this-alpha-supports) · [Roadmap](README.md#the-full-go-live-checklist-and-roadmap) · [Mitwirken](CONTRIBUTING.md)
 
